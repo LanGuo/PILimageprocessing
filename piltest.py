@@ -42,13 +42,15 @@ def mergeAllChannels(channelmap):
     """
     # Mapping the lists of filenames in channelmap to generate a list of tuples with the different channels from the same section
     sectionstomerge = map(channelmap.values()) 
+    counter = 0
     for s in sectionstomerge:    
-        mergedfile = Image.merge("RGB", s)
-        mergedfile.save()
+        mergedfile = Image.merge("RGB", s) #assuming PIL is able to open the format
+        #make a new directory on histology drive and save images into that folder?
+        #?mergedfile.save(channelmap.values(1)(counter), "JPEG")
 
 
 
-# Image rotation and registration
+# Image rotation and registration(maybe can use find edges to register to atlas?)
 
 
   
