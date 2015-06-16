@@ -15,8 +15,8 @@ def getImagingFiles(inputdir):
     if not os.path.isdir(inputdir):
         raise RuntimeError, "The directory provided does not exist"
     # Get all the filenames from the input directory, right now ignoring subdirectories. May consider using os.walk to get files from subdirectories in the future.
-    onlyfiles = [ f for f in listdir(inputdir) if isfile(join(inputdir,f)) ]
-    onlyfilesfull = join(inputdir, onlyfiles)
+    onlyfiles = [f for f in listdir(inputdir) if isfile(join(inputdir,f))]
+    onlyfilesfull = [join(inputdir, f) for f in onlyfiles]
     return onlyfilesfull
 
   
@@ -25,8 +25,14 @@ def getChannels(filenames, channelnames):
     Based on user specified channel names, generate separate lists of filenames for that channel, stored in a dictionary.
     """
     # num_channels = len(channelnames)
+   
+    channelmap = {}
     for c in channelnames: 
-        channelmap = {c : sorted(f for f in filenames if f.endswith(c))}
+        for f in filenames: 
+            if f.endswith(c):
+                channelmap[c].extend(f) 
+        channelmap[c] = sorted(channelmap[c])
+
     return channelmap
 
 
