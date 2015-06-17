@@ -24,29 +24,30 @@ def getChannels(filenames, channelnames):
     """
     Based on user specified channel names, generate separate lists of filenames for that channel, stored in a dictionary.
     """
-    # num_channels = len(channelnames)
-   
     channelmap = {}
-    for c in channelnames: 
-        for f in filenames: 
-            if f.endswith(c):
-                channelmap[c].extend(f) 
-        channelmap[c] = sorted(channelmap[c])
+    for chan in channelnames: 
+        print chan
+        channelmap[chan] = sorted([fn for fn in filenames if fn[:-4].endswith(chan)])
 
     return channelmap
 
 
-def mergeAllChannels(channelmap):
+def mergeAllChannels(channelmap, filenames):
     """
     Use image.merge to iterate over the channel lists and merge the channels of the same section to get a composite image
     """
     # Mapping the lists of filenames in channelmap to generate a list of tuples with the different channels from the same section
-    sectionstomerge = map(channelmap.values()) 
-    counter = 0
+    sectionstomerge = zip(*channelmap.values()) 
+    
+#    merged_filenames = []
+#    for f in channelmap.values()[0]:
+#        f_mergename = f[:-5]
+#        merged_filenames += f_mergename
+
     for s in sectionstomerge:    
-        mergedfile = Image.merge("RGB", s) #assuming PIL is able to open the format
+        mergedfile = Image.merge("RGB", s) #assuming PIL is able to open the format and also merge function takes arbituary number of channels
         #make a new directory on histology drive and save images into that folder?
-        #?mergedfile.save(channelmap.values(1)(counter), "JPEG")
+        mergedfile.save(s[0][:-5], "JPEG")
 
 
 
